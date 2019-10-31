@@ -13,12 +13,13 @@
 		,
 		{
 			"name": "Build and run",
-			"linux" : {
-				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && \"${file_path}/../build/${file_base_name}\"",
-			},
 			
 			"windows": {
 				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && start cmd /k \"$file_path/../build/$file_base_name\"",
+			},
+
+			"linux" : {
+				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && \"${file_path}/../build/${file_base_name}\"",
 			},
 
 			"shell": true,
@@ -50,29 +51,10 @@
 			},
 
 			"linux": {
-				"shell_cmd": "g++ -g -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal gdb \"${file_path}/../build/${file_base_name}\"",				
+				"shell_cmd": "g++ -g -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal -- gdb \"${file_path}/../build/${file_base_name}\"",				
 			},
 
 			"shell": true, 
 		}
-		,
-		{
-			"name": "Build and Debug with predefined input",
-			"target": "build_system_input",
-			
-			"windows": { 
-				"shell_cmd": "g++ -g -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && start cmd /k \"${file_path}/../build/${file_base_name} %args% && start gdb ${file_path}/../build/${file_base_name}\"",
-			},
-
-			"linux": {
-				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal gdb \"${file_path}/../build/${file_base_name} %args% && echo && echo Press ENTER to EXIT && read line && exit\"",
-			},
-
-			"shell": true, 
-			"input": {
-				"args": "some args",
-			}
-		}
-
 	]	
 }
