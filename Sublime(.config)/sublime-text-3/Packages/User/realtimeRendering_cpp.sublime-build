@@ -1,0 +1,48 @@
+{
+	"cmd": ["g++", "-std=c++11", "-Wall", "${file}", "-o", "${file_path}/../build/${file_base_name}"], 
+	"selector": "source.cpp",
+	"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+	"working_dir" : "${file_path}",
+
+	"variants":
+	[
+		{
+			"name": "Run",
+			"cmd": ["${file_path}/../build/${file_base_name}"],
+		}
+		,
+		{
+			"name": "Build and run",
+			
+			"linux" : {
+				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && \"${file_path}/../build/${file_base_name}\"",
+			},
+			
+			"windows": {
+				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && start cmd $file_base_name",
+			},
+
+			"shell": true,
+		}
+		,
+		{
+			"name": "Compile and Run with predefined input",
+			"target": "build_system_input",
+
+			"windows": {
+				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && start cmd /k \"${file_path}/../build/${file_base_name} %args% && pause && exit\"",
+			},
+			
+			"linux": {
+
+				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal  -- bash -c \"${file_path}/../build/${file_base_name} %args% && echo && echo Press ENTER to EXIT && read line && exit\"",
+			},
+			
+			"shell":true,
+			"input": {
+				"args": "some args",
+			}
+		}
+
+	]	
+}

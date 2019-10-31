@@ -1,0 +1,641 @@
+{
+	"folder_history":
+	[
+		"/home/philipp/Dokumente/uni/RealtimeRendering/Realtime-Rendering/assignment1",
+		"/home/philipp/Dokumente/uni/RealtimeRendering/Realtime-Rendering/assignment1/source"
+	],
+	"last_version": 3211,
+	"last_window_id": 12,
+	"log_indexing": false,
+	"settings":
+	{
+		"new_window_height": 0.0,
+		"new_window_settings":
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+					[
+						"shel",
+						"shell"
+					],
+					[
+						"shell",
+						"shell_cmd"
+					],
+					[
+						"file",
+						"file_base_name"
+					]
+				]
+			},
+			"build_system_choices":
+			[
+				[
+					[
+						[
+							"Packages/C++/C++ Single File.sublime-build",
+							""
+						],
+						[
+							"Packages/C++/C++ Single File.sublime-build",
+							"Run"
+						]
+					],
+					[
+						"Packages/C++/C++ Single File.sublime-build",
+						"Run"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Run"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Build and run"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Compile and Run with terminal input"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Compile and Run with predefined input"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Compile and Run with terminal input"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run with terminal input"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Run with terminal input"
+					]
+				]
+			],
+			"build_varint": "",
+			"command_palette":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+					[
+						"c++",
+						"Set Syntax: C++"
+					]
+				],
+				"width": 0.0
+			},
+			"console":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/home/philipp/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+				"/home/philipp/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+				"/home/philipp/.config/sublime-text-3/Packages/User/realtimeRendering_cpp.sublime-build"
+			],
+			"find":
+			{
+				"height": 26.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"incremental_find":
+			{
+				"height": 26.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"menu_visible": true,
+			"output.exec":
+			{
+				"height": 151.0
+			},
+			"output.find_results":
+			{
+				"height": 0.0
+			},
+			"pinned_build_system": "Packages/User/realtimeRendering_cpp.sublime-build",
+			"replace":
+			{
+				"height": 48.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": true,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": false,
+			"side_bar_width": 252.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			}
+		},
+		"new_window_width": 0.0
+	},
+	"windows":
+	[
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+					[
+						"shel",
+						"shell"
+					],
+					[
+						"shell",
+						"shell_cmd"
+					],
+					[
+						"file",
+						"file_base_name"
+					]
+				]
+			},
+			"buffers":
+			[
+				{
+					"file": "/home/philipp/Dokumente/uni/RealtimeRendering/Realtime-Rendering/assignment1/source/exercise11.cpp",
+					"settings":
+					{
+						"buffer_size": 155,
+						"encoding": "UTF-8",
+						"line_ending": "Unix"
+					}
+				}
+			],
+			"build_system": "Packages/User/realtimeRendering_cpp.sublime-build",
+			"build_system_choices":
+			[
+				[
+					[
+						[
+							"Packages/C++/C++ Single File.sublime-build",
+							""
+						],
+						[
+							"Packages/C++/C++ Single File.sublime-build",
+							"Run"
+						]
+					],
+					[
+						"Packages/C++/C++ Single File.sublime-build",
+						"Run"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Run"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Build and run"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Compile and Run with predefined input"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Compile and Run with predefined input"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Compile and Run with terminal input"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Compile and Run with predefined input"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Compile and Run with predefined input"
+					]
+				],
+				[
+					[
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							""
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Build and run"
+						],
+						[
+							"Packages/User/realtimeRendering_cpp.sublime-build",
+							"Run with terminal input"
+						]
+					],
+					[
+						"Packages/User/realtimeRendering_cpp.sublime-build",
+						"Run with terminal input"
+					]
+				]
+			],
+			"build_varint": "Compile and Run with predefined input",
+			"command_palette":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+					[
+						"Pac",
+						"Package Control: Install Package"
+					],
+					[
+						"packa",
+						"Package Control: Discover Packages"
+					],
+					[
+						"c++",
+						"Set Syntax: C++"
+					]
+				],
+				"width": 0.0
+			},
+			"console":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/home/philipp/.config/sublime-text-3/Packages/User/realtimeRendering_cpp.sublime-build",
+				"/home/philipp/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+				"/home/philipp/.config/sublime-text-3/Packages/User/Preferences.sublime-settings"
+			],
+			"find":
+			{
+				"height": 26.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"groups":
+			[
+				{
+					"selected": 0,
+					"sheets":
+					[
+						{
+							"buffer": 0,
+							"file": "/home/philipp/Dokumente/uni/RealtimeRendering/Realtime-Rendering/assignment1/source/exercise11.cpp",
+							"semi_transient": false,
+							"settings":
+							{
+								"buffer_size": 155,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										141,
+										141
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/C++/C++.sublime-syntax"
+								},
+								"translation.x": 0.0,
+								"translation.y": 0.0,
+								"zoom_level": 1.0
+							},
+							"stack_index": 0,
+							"type": "text"
+						}
+					]
+				}
+			],
+			"incremental_find":
+			{
+				"height": 26.0
+			},
+			"input":
+			{
+				"height": 38.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"output.exec":
+			{
+				"height": 151.0
+			},
+			"output.find_results":
+			{
+				"height": 0.0
+			},
+			"pinned_build_system": "Packages/User/realtimeRendering_cpp.sublime-build",
+			"position": "0,1,0,0,0,67,27,707,507,3840,1080",
+			"project": "",
+			"replace":
+			{
+				"height": 48.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"selected_group": 0,
+			"settings":
+			{
+			},
+			"show_minimap": true,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": false,
+			"side_bar_width": 252.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			},
+			"window_id": 12,
+			"workspace_name": ""
+		}
+	],
+	"workspaces":
+	{
+		"recent_workspaces":
+		[
+		]
+	}
+}

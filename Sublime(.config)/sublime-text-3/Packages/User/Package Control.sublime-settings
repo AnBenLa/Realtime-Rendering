@@ -1,0 +1,14 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"BuildSystemInput"
+	],
+	"repositories":
+	[
+		"https://github.com/dhelonious/BuildSystemInput"
+	]
+}
