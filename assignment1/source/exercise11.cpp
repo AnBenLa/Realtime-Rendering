@@ -5,6 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
-	std::cout<<argv[1];
+	std::cout<<"Hallo\n";
+	std::cout<<argv[1]<<"\n";
 	return 0;
-}	
+}

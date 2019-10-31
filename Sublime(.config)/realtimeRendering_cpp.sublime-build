@@ -19,7 +19,7 @@
 			},
 			
 			"windows": {
-				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && start cmd $file_base_name",
+				"shell_cmd": "g++ -std=c++11 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && start cmd /k \"$file_path/../build/$file_base_name\"",
 			},
 
 			"shell": true,
