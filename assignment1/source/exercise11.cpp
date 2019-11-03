@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-std::string INPUT_FORMAT = 	"Enter values: 0 0 0 1 1 0 1 1 for the vec4 (0 0 0 1) and vec4 (1 0 1 1) as one problem instance.\n " 
-							"You can press ENTER for multiple instances and end your input with a 0 0 0 0 0 0 0 0 instance\n";
+std::string INPUT_FORMAT = 	"Example values: 0 0 0 1 1 0 1 1 for the points (0,0), (0,1), (0,0), (0,1) as one problem instance.\n " 
+							"You can create multiple instances and quit with an 0 0 0 0 0 0 0 0 instance.\n";
 
 struct point2D
 {
@@ -18,7 +18,7 @@ struct segment2D
 	point2D a, b;
 };
 
-struct vec2
+struct vec3
 {
 	double x, y, z;	
 };
@@ -44,20 +44,25 @@ int ORI(point2D const& a, point2D const& b, point2D const& c){
 	return 0;//collinear 
 }
 
-vec2 cross(point2D const& p1, point2D const& p2)
+bool intersect(segment2D const& seg1, segment2D const& seg2)
 {
-	vec2 v{0.0,0.0,0.0};
-	v.x = p1.y*p1.z-p1.z*p2.y;
-	v.y = p1.z*p2.x-p1.x-p2.z;
+	return ORI(seg1.a, seg1.b, seg2.a)*ORI(seg1.a,seg1.b,seg2.b)<=0 && ORI(seg2.a,seg2.b,seg1.a)*ORI(seg2.a,seg2.b,seg1.b)<=0;
+}
+
+vec3 cross(point2D const& p1, point2D const& p2)
+{
+	vec3 v{0.0,0.0,0.0};
+	v.x = p1.y*p2.z-p1.z*p2.y;
+	v.y = p1.z*p2.x-p1.x*p2.z;
 	v.z = p1.x*p2.y-p1.y*p2.x;
 	return v;
 }
 
-vec2 cross(vec2 const& v1, vec2 const& v2)
+vec3 cross(vec3 const& v1, vec3 const& v2)
 {
-	vec2 v{0.0,0.0,0.0};
-	v.x = v1.y*v1.z-v1.z*v2.y;
-	v.y = v1.z*v2.x-v1.x-v2.z;
+	vec3 v{0.0,0.0,0.0};
+	v.x = v1.y*v2.z-v1.z*v2.y;
+	v.y = v1.z*v2.x-v1.x*v2.z;
 	v.z = v1.x*v2.y-v1.y*v2.x;
 	return v;
 }
@@ -71,7 +76,7 @@ int main(int argc, char const *argv[])
 	}
 	else
 	{
-		std::cout<<"Type "<<argv[0]<<" -h to get help for input format.\n\n";
+		std::cout<<"Use exercise11.cpp -h to get help for input format.\n\n";
 
 		while (true){
 			double x_0,x_1,x_2,x_3,y_0,y_1,y_2,y_3 = 0.0;
@@ -89,20 +94,23 @@ int main(int argc, char const *argv[])
 			segment2D seg2{{x_2,y_2},{x_3,y_3}};
 
 			// check if they are collinear
-			if((ORI(seg1.a, seg1.b, seg2.a) == 0 && ORI(seg1.a,seg1.b,seg2.b) == 0)||(ORI(seg2.a,seg2.b,seg1.a) == 0 && ORI(seg2.a,seg2.b,seg1.b)==0))
+			if((ORI(seg1.a, seg1.b, seg2.a) == 0 && ORI(seg1.a,seg1.b,seg2.b) == 0)||(ORI(seg2.a,seg2.b,seg1.a) == 0 && ORI(seg2.a,seg2.b,seg1.b) == 0))
 			{
-				std::cout<<"segment intersection";
+				std::cout<<"segment intersection\n";
 			}
 			else
 			{
 				// check if they intersect
-				if(ORI(seg1.a, seg1.b, seg2.a)*ORI(seg1.a,seg1.b,seg2.b)<=0 && ORI(seg2.a,seg2.b,seg1.a)*ORI(seg2.a,seg2.b,seg1.b)<=0)
+				if(intersect(seg1,seg2))
 				{
-					vec2 line1 = cross(seg1.a,seg2.b);
-					vec2 line2 = cross(seg2.a,seg2.b);
-					vec2 intersection_vector = cross(line1,line2);
+					// get line representation in implicit form (ax + bx +c = 0)
+					vec3 line1 = cross(seg1.a,seg1.b);
+					vec3 line2 = cross(seg2.a,seg2.b);
+
+					// use line x line = intersection
+					vec3 intersection_vector = cross(line1,line2);
 					if(intersection_vector.z == 0){
-						std::cout<<"no intersection";
+						std::cout<<"no intersection\n";
 					}
 					else{
 						point2D intersection{intersection_vector.x/intersection_vector.z,intersection_vector.y/intersection_vector.z};
@@ -111,7 +119,7 @@ int main(int argc, char const *argv[])
 				}
 				else
 				{
-					std::cout<<"no intersection";
+					std::cout<<"no intersection\n";
 				}
 			}
 		}
