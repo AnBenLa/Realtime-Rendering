@@ -13,6 +13,7 @@
 		,
 		{
 			"name": "Build and run",
+			
 			"linux" : {
 				"shell_cmd": "g++ -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && \"${file_path}/../build/${file_base_name}\"",
 			},
@@ -73,6 +74,5 @@
 				"args": "some args",
 			}
 		}
-
 	]	
 }
