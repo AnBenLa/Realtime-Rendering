@@ -88,10 +88,20 @@ int main(int argc, char const *argv[])
 			}
 
 			//init data
-			point2D p1{x_0,y_0};
-			point2D p2{x_1,y_1};
+			point2D p1;
+			p1.x = x_0;
+			p1.y = y_0;
+			point2D p2;
+			p2.x= x_1;
+			p2.y = y_1;
 			segment2D seg1{p1,p2};
-			segment2D seg2{{x_2,y_2},{x_3,y_3}};
+			point2D p3;
+			p3.x = x_2;
+			p3.y = y_2;
+			point2D p4;
+			p4.x = x_3;
+			p4.y = y_3;
+			segment2D seg2{p3,p4};
 
 			// check if they are collinear
 			if((ORI(seg1.a, seg1.b, seg2.a) == 0 && ORI(seg1.a,seg1.b,seg2.b) == 0)||(ORI(seg2.a,seg2.b,seg1.a) == 0 && ORI(seg2.a,seg2.b,seg1.b) == 0))
@@ -113,7 +123,9 @@ int main(int argc, char const *argv[])
 						std::cout<<"no intersection\n";
 					}
 					else{
-						point2D intersection{intersection_vector.x/intersection_vector.z,intersection_vector.y/intersection_vector.z};
+						point2D intersection;
+						intersection.x = intersection_vector.x/intersection_vector.z;
+						intersection.y = intersection_vector.y/intersection_vector.z;
 						std::cout<<intersection.x<<" "<<intersection.y<<"\n";
 					}
 				}
