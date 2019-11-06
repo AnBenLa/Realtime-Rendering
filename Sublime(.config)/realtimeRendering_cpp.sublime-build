@@ -15,7 +15,7 @@
 			"name": "Build and run",
 			
 			"linux" : {
-				"shell_cmd": "g++ -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && \"${file_path}/../build/${file_base_name}\"",
+				"shell_cmd": "g++ -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal -- \"${file_path}/../build/${file_base_name}\"",
 			},
 			
 			"windows": {
@@ -51,7 +51,7 @@
 			},
 
 			"linux": {
-				"shell_cmd": "g++ -g -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal gdb \"${file_path}/../build/${file_base_name}\"",				
+				"shell_cmd": "g++ -g -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal -- gdb \"${file_path}/../build/${file_base_name}\"",				
 			},
 
 			"shell": true, 
@@ -66,7 +66,7 @@
 			},
 
 			"linux": {
-				"shell_cmd": "g++ -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal gdb \"${file_path}/../build/${file_base_name} %args% && echo && echo Press ENTER to EXIT && read line && exit\"",
+				"shell_cmd": "g++ -std=c++17 -Wall \"${file}\" -o \"${file_path}/../build/${file_base_name}\" && gnome-terminal -- gdb \"${file_path}/../build/${file_base_name} %args% && echo && echo Press ENTER to EXIT && read line && exit\"",
 			},
 
 			"shell": true, 
