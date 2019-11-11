@@ -140,11 +140,11 @@ int main(int argc, char const *argv[])
 					if (p1 == p3)
 					{
 						std::printf("%.2f", p1.x);
-						std::printf(" %.2f\n\n",p1.y);
+						std::printf(" %.2f\n",p1.y);
 					}
 					else
 					{
-						std::cout<<"no intersection\n\n";
+						std::cout<<"no intersection\n";
 					}
 				}
 				else
@@ -153,11 +153,11 @@ int main(int argc, char const *argv[])
 					if(ORI(seg2.a,seg2.b,p1) == 0)
 					{
 						std::printf("%.2f", p1.x);
-						std::printf(" %.2f\n\n", p1.y);
+						std::printf(" %.2f\n", p1.y);
 					}
 					else
 					{
-						std::cout<<"no intersection\n\n";
+						std::cout<<"no intersection\n";
 					}
 				}
 			}
@@ -170,11 +170,11 @@ int main(int argc, char const *argv[])
 					if(ORI(seg1.a,seg1.b,p3) == 0)
 					{
 						std::printf("%.2f", p3.x);
-						std::printf(" %.2f\n\n", p3.y);
+						std::printf(" %.2f\n", p3.y);
 					}
 					else
 					{
-						std::cout<<"no intersection\n\n";
+						std::cout<<"no intersection\n";
 					}
 				}
 				else
@@ -184,7 +184,7 @@ int main(int argc, char const *argv[])
 					//check if both segments are colinear
 					if(intersection<0)
 					{
-						std::cout<<"segment intersection\n\n";
+						std::cout<<"segment intersection\n";
 					}
 					else
 					{
@@ -199,7 +199,7 @@ int main(int argc, char const *argv[])
 
 							//check if the lines are paralell
 							if(intersection_vector.z == 0){
-								std::cout<<"no intersection\n\n";
+								std::cout<<"no intersection\n";
 							}
 							else{
 								point2D intersection;
@@ -207,13 +207,12 @@ int main(int argc, char const *argv[])
 								intersection.y = intersection_vector.y/intersection_vector.z;
 								intersection.z = 1.0;
 								std::printf("%.2f",intersection.x);
-								std::printf(" %.2f\n\n",intersection.y);
-								std::cout<<"\n";
+								std::printf(" %.2f\n",intersection.y);
 							}
 						}
 						else
 						{
-							std::cout<<"no intersection\n\n";
+							std::cout<<"no intersection\n";
 						}
 
 					}
