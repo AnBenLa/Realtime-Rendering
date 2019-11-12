@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\freeglut_callbacks.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_cursor.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_display.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_ext.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_font.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_font_data.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_gamemode.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_geometry.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_glutfont_definitions.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_init.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_input_devices.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_joystick.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_main.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_menu.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_misc.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_overlay.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_state.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_stroke_mono_roman.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_stroke_roman.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_structure.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_teapot.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_videoresize.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\freeglut_window.c">
+      <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="glapplication.cpp" />
+    <ClCompile Include="glwindow.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\GL\freeglut.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\glut.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\freeglut_ext.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="src\freeglut_internal.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\freeglut_std.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="src\freeglut_teapot_data.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="glapplication.hpp" />
+    <ClInclude Include="glwindow.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Externals">
+      <UniqueIdentifier>{701d0c80-9eb1-40e8-9e2d-6d8e9fb58aa2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\freeglutdll.def">
+      <Filter>Externals</Filter>
+    </None>
+  </ItemGroup>
+</Project>
