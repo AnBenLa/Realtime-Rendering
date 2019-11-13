@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-std::string INPUT_FORMAT = 	"Example values: 0 0 0 1 1 0 1 1 for the points (0,0), (0,1), (0,0), (0,1) as one problem instance.\n " 
-							"You can create multiple instances and quit with an 0 0 0 0 0 0 0 0 instance.\n";
 
 struct point2D{
 	double x, y, z;
@@ -100,8 +98,6 @@ int main(int argc, char const *argv[])
 	}
 	else
 	{
-		std::cout<<"Use exercise11.cpp -h to get help for input format.\n\n";
-
 		while (true){
 			double x_0,x_1,x_2,x_3,y_0,y_1,y_2,y_3 = 0.0;
 			std::cin>>x_0>>y_0>>x_1>>y_1>>x_2>>y_2>>x_3>>y_3;
