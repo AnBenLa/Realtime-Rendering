@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <cmath>
+#include <algorithm>
 
 std::string INPUT_FORMAT = 	"Example values:\n" \
 							"3\n" \
@@ -72,38 +74,50 @@ int ORI(point2D const& a, point2D const& b, point2D const& c){
 
 float distanceFromSegment(segment2D const& segment, point2D const& point)
 {
-	return 0;
+	float divident = (segment.b.x-segment.a.x)*(segment.a.y-point.y)-(segment.a.x-point.x)*(segment.b.y-segment.a.y);
+	float divisor = std::pow((segment.b.x-segment.a.x),2)+std::pow((segment.b.y-segment.a.y),2);
+	return std::fabs(divident)/std::sqrt(divisor);
 }
 
-segment2D quickhull(segment2D const& segment, std::vector<point2D> points)
+void merge(std::vector<segment2D>& target, std::vector<segment2D> const& to_merge)
+{
+	//temporary wrong solution
+	target.insert(target.end(), to_merge.begin(),to_merge.end());
+}
+
+std::vector<segment2D> hull(point2D const& a, point2D const& b, std::vector<point2D> const& points)
 {
 	if(points.empty())
 	{
-		return segment;
+		return std::vector<segment2D>{{a,b}};
 	}
-	std::vector<points> left;
+	std::vector<point2D> left_most;
+
 	for (point2D p : points)
 	{
-		if(segment.a,segment.b,p)
+		if(ORI(a,b,p)==1)
 		{
-			left.push_back(p);
-		}
-		
-		if(left.empty())
-		{
-			return segment;
-		}
-
-		point2D p_far = left[0];
-		for (point2D p : left)
-		{
-			if(p_far>distanceFromSegment(segment,p))
-			{
-				p_far = p;
-			}
+		 left_most.push_back(p);
 		}
 	}
+		
+	if (left_most.empty())
+	{
+		return std::vector<segment2D>{{a,b}};
+	}
+
+	std::sort(left_most.begin(),left_most.end(),[a,b](point2D const& p1, point2D const& p2){
+		return distanceFromSegment({a,b},p1)>distanceFromSegment({a,b},p2);
+	});
+
+	point2D p_far = *left_most.begin();
+
+	std::vector<segment2D>subhull = hull(a,p_far,left_most);
+	std::vector<segment2D>mergehull = hull(p_far,b,left_most);
+	merge(subhull,mergehull);
+	return subhull;
 }
+
 
 int main(int argc, char const *argv[])
 {
@@ -154,27 +168,91 @@ int main(int argc, char const *argv[])
 			return(0);
 		}
 	}
-
-	std::cin>>number_of_points;
-	if(number_of_points<3)
+	else
 	{
-		std::cout<<"\nNot enough points given!";
-		return 0;
+		std::cin>>number_of_points;
+		if(number_of_points<3)
+		{
+			std::cout<<"\nNot enough points given!";
+			return 0;
+		}
+
+		double x,y = 0;
+		uint inputCount = 0;
+		while(inputCount<number_of_points&&std::cin>>x>>y)
+		{
+			points.push_back(point2D{x,y,1});
+			inputCount++;
+		}
 	}
-	
-	double x,y = 0;
-	uint inputCount = 0;
-	while(inputCount<number_of_points&&std::cin>>x>>y)
+
+	point2D left_most{0,0};
+	point2D right_most{0,0};
+	point2D top_most{0,0};
+	point2D bottom_most{0,0};
+
+	/*
+	std::sort(points.begin(),points.end(),[](point2D const& a, point2D const& b){
+		return a.x<b.x;
+	});
+	left_most = *points.begin();
+	right_most = *points.end()--;
+
+	std::sort(points.begin(),points.end(),[](point2D const& a, point2D const& b){
+		return a.y<b.y;
+	});
+	bottom_most = *points.begin();
+	top_most = *points.end()--;
+	*/
+
+	//find extreme points
+	for(point2D const& p : points)
 	{
-		points.push_back(point2D{x,y,1});
-		inputCount++;
+		if(p.x < left_most.x)
+		{
+		 left_most = p;
+		}
+		else
+		{
+			if(p.x>right_most.x)
+			{
+				right_most = p;
+			}
+		}
+
+		if(p.y < bottom_most.y)
+		{
+			bottom_most = p;
+		}
+		else
+		{
+			if(p.y > top_most.y)
+			{
+			 top_most = p;
+			}
+		}
 	}
 
-	std::cout<<points.size();
+	//merge result subsets together
+	std::vector<segment2D> top_right = hull(top_most,right_most,points);
+	std::vector<segment2D> bottom_right = hull(right_most,bottom_most,points);
+	std::vector<segment2D> bottom_left = hull(bottom_most,left_most,points);
+	std::vector<segment2D> top_left = hull(left_most,top_most,points);
+	std::vector<segment2D> result_hull;
+	merge(result_hull,top_right);
+	merge(result_hull,bottom_right);
+	merge(result_hull,bottom_left);
+	merge(result_hull,top_left);
 
-	for (point2D p : points)
+	//output the convex hull points
+	for(segment2D const& seg : result_hull)
 	{
-		std::cout<<"\n"<<p.x<<" "<<p.y;
+		std::cout<<seg.a.x<<" "<<seg.a.y<<"\n";
+	}
+
+	while(true)
+	{
+
 	}
 	return 0;
 }
