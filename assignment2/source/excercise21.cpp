@@ -46,76 +46,177 @@ vec3 cross(vec3 const& v1, vec3 const& v2)
 	return v;
 }
 
-bool operator ==(point2D const& p1,point2D const& p2)
+bool operator == (point2D const& p1,point2D const& p2)
 {
 	return (p1.x == p2.x && p1.y == p2.y && p1.z == p2.z);
 }
 
+//returns -1 for ccw, +1 for cw and 0 if b is collinear with the line through a and c
 int ORI(point2D const& a, point2D const& b, point2D const& c){
-	double dx21 = b.x-a.x;
-	double dy21 = b.y-a.y;
-	double dx31 = c.x-a.x;
-	double dy31 = c.y-a.y;
-	
-	if (dx21*dy31 < dy21*dx31)
-		return -1;//ccw
-
-	if(dx21*dy31 > dy21*dx31)
-		return +1;//cw
-
-	if(dx21*dx31 < 0 || dy21*dy31<0)
-		return -1;//ccw
-
-	if(dx31*dx31 + dy31*dy31 > dx21*dx21 + dy21*dy21)
-		return +1; //cw
-
-	return 0;//collinear 
+    double dx21 = b.x - a.x;
+    double dy21 = b.y - a.y;
+    double dx31 = c.x - a.x;
+    double dy31 = c.y - a.y;
+    
+    if(dy31*dx21 > dx31*dy21)
+        return - 1;
+    if(dy31*dx21 < dx31*dy21)
+        return +1;
+    return 0;
 }
 
+//returns the perpendicular distance of a point to segment
 float distanceFromSegment(segment2D const& segment, point2D const& point)
 {
+	//uses the formula ax + by + c = 0
 	float divident = (segment.b.x-segment.a.x)*(segment.a.y-point.y)-(segment.a.x-point.x)*(segment.b.y-segment.a.y);
 	float divisor = std::pow((segment.b.x-segment.a.x),2)+std::pow((segment.b.y-segment.a.y),2);
 	return std::fabs(divident)/std::sqrt(divisor);
 }
 
-void merge(std::vector<segment2D>& target, std::vector<segment2D> const& to_merge)
+//recursive hull function
+std::vector<point2D> hull(point2D const& a, point2D const& b, std::vector<point2D> const& points)
 {
-	//temporary wrong solution
-	target.insert(target.end(), to_merge.begin(),to_merge.end());
-}
+	//check if two extreme points are the same
+	if(a == b)
+	{
+		return {};
+	}
 
-std::vector<segment2D> hull(point2D const& a, point2D const& b, std::vector<point2D> const& points)
-{
 	if(points.empty())
 	{
-		return std::vector<segment2D>{{a,b}};
+		return std::vector<point2D>{b};
 	}
-	std::vector<point2D> left_most;
+	std::vector<point2D> left;
 
+	//search for left points
 	for (point2D p : points)
 	{
-		if(ORI(a,b,p)==1)
+		if(ORI(a,b,p)==-1)
 		{
-		 left_most.push_back(p);
+		 	left.push_back(p);
 		}
 	}
 		
-	if (left_most.empty())
+	if (left.empty())
 	{
-		return std::vector<segment2D>{{a,b}};
+		return std::vector<point2D>{b};
 	}
 
-	std::sort(left_most.begin(),left_most.end(),[a,b](point2D const& p1, point2D const& p2){
+	std::sort(left.begin(),left.end(),[a,b](point2D const& p1, point2D const& p2){
 		return distanceFromSegment({a,b},p1)>distanceFromSegment({a,b},p2);
 	});
 
-	point2D p_far = *left_most.begin();
+	point2D p_far = *left.begin();
+	left.erase(left.begin());
 
-	std::vector<segment2D>subhull = hull(a,p_far,left_most);
-	std::vector<segment2D>mergehull = hull(p_far,b,left_most);
-	merge(subhull,mergehull);
+	//recursive call for segments a-c and c-b 
+	std::vector<point2D>subhull = hull(a,p_far,left);
+	std::vector<point2D>mergehull = hull(p_far,b,left);
+	subhull.insert(subhull.end(),mergehull.begin(),mergehull.end());
 	return subhull;
+}
+
+std::vector<point2D> quickHull(std::vector<point2D> const& points_input)
+{
+	std::vector<point2D> points = points_input;
+	std::vector<point2D> result_hull;
+
+	point2D left_most{0,0,1};
+	point2D right_most{0,0,1};
+	point2D top_most{0,0,1};
+	point2D bottom_most{0,0,1};
+
+	if(points.size()<3)
+	{
+		std::cout<<"\nNot enough points given!";				
+		return result_hull;
+	}
+
+	//sort horizontal
+	std::sort(points.begin(),points.end(),[](point2D const& a, point2D const& b){
+			if(a.x==b.x)
+			{
+				return a.y < b.y;
+			}
+			return a.x < b.x;
+		});
+
+	left_most = *points.begin();
+	right_most = *(points.end()-1);
+
+	//special case 3 points
+	if(points.size()==3)
+	{
+		point2D mid = *(points.begin()+1);
+		int ori = ORI(left_most,right_most,mid);
+		switch (ori)
+		{
+			case 0:
+			{
+				return result_hull;
+			}
+			case 1:
+			{
+				result_hull = {left_most,right_most,mid};
+				return result_hull;
+			}
+			case -1:
+			{
+				result_hull = {left_most,mid,right_most};
+				return result_hull;
+			}
+		}
+	}
+	left_most = *points.begin();
+	right_most = *(points.end()-1);
+
+	//sort vertical
+	std::sort(points.begin(),points.end(),[](point2D const& a, point2D const& b){
+		if(a.y == b.y){
+			return a.x<b.x;
+		}
+		return a.y < b.y;
+	});
+	bottom_most = *points.begin();
+	top_most = *(points.end()-1);
+
+	//calculate all 4 subhulls
+	std::vector<point2D> top_left_hull = hull(left_most,top_most,points);
+	result_hull.insert(result_hull.end(), top_left_hull.begin(),top_left_hull.end());
+
+	std::vector<point2D> top_right_hull = hull(top_most,right_most,points);
+	result_hull.insert(result_hull.end(), top_right_hull.begin(),top_right_hull.end());
+	
+	std::vector<point2D> bottom_right_hull = hull(right_most,bottom_most,points);
+	result_hull.insert(result_hull.end(), bottom_right_hull.begin(),bottom_right_hull.end());
+	
+	std::vector<point2D> bottom_left_hull = hull(bottom_most,left_most,points);
+	result_hull.insert(result_hull.end(), bottom_left_hull.begin(),bottom_left_hull.end());
+
+
+	//sort to start with the bottom left 
+	point2D bottom_left_most = result_hull[0];
+	uint position_bottom_left_most = 0;
+
+	for (uint i = 0; i<result_hull.size(); i++)
+	{
+		if(result_hull[i].x<=bottom_left_most.x&&result_hull[i].y<=bottom_left_most.y)
+		{
+			bottom_left_most = result_hull[i];
+			position_bottom_left_most = i;
+		}
+	}
+
+	uint result_hull_size = result_hull.size();
+
+	for(uint j = 0; j < result_hull_size-position_bottom_left_most; j++)
+	{
+		result_hull.insert(result_hull.begin(),*(result_hull.end()-1));
+		result_hull.pop_back();
+	}
+
+	return result_hull;
 }
 
 
@@ -142,15 +243,17 @@ int main(int argc, char const *argv[])
 			{
 				std::ifstream file(argv[2]);
 				file>>number_of_points;
-				if(number_of_points<3)
-				{
-					std::cout<<"\nNot enough points given!";
-					return 0;
-				}
+
 				double x,y = 0;
 				uint inputCount = 0;
 				while(inputCount<number_of_points&&file>>x>>y)
 				{
+					if((x<-350||x>350)||(y<-350||y>350))
+					{
+						file.close();
+						std::cout<<"\npoint in line "<<inputCount+1<<" is invalid!";
+						return 0;
+					}
 					points.push_back(point2D{x,y,1});
 					inputCount++;
 				}
@@ -171,88 +274,28 @@ int main(int argc, char const *argv[])
 	else
 	{
 		std::cin>>number_of_points;
-		if(number_of_points<3)
-		{
-			std::cout<<"\nNot enough points given!";
-			return 0;
-		}
 
 		double x,y = 0;
 		uint inputCount = 0;
 		while(inputCount<number_of_points&&std::cin>>x>>y)
 		{
+			if((x<-350||x>350)||(y<-350||y>350))
+			{
+				std::cout<<"\npoint "<<inputCount+1<<" is invalid!";
+				return 0;
+			}
 			points.push_back(point2D{x,y,1});
 			inputCount++;
 		}
 	}
 
-	point2D left_most{0,0};
-	point2D right_most{0,0};
-	point2D top_most{0,0};
-	point2D bottom_most{0,0};
+	std::vector<point2D> result_hull = quickHull(points);
 
-	/*
-	std::sort(points.begin(),points.end(),[](point2D const& a, point2D const& b){
-		return a.x<b.x;
-	});
-	left_most = *points.begin();
-	right_most = *points.end()--;
-
-	std::sort(points.begin(),points.end(),[](point2D const& a, point2D const& b){
-		return a.y<b.y;
-	});
-	bottom_most = *points.begin();
-	top_most = *points.end()--;
-	*/
-
-	//find extreme points
-	for(point2D const& p : points)
-	{
-		if(p.x < left_most.x)
-		{
-		 left_most = p;
-		}
-		else
-		{
-			if(p.x>right_most.x)
-			{
-				right_most = p;
-			}
-		}
-
-		if(p.y < bottom_most.y)
-		{
-			bottom_most = p;
-		}
-		else
-		{
-			if(p.y > top_most.y)
-			{
-			 top_most = p;
-			}
-		}
-	}
-
-	//merge result subsets together
-	std::vector<segment2D> top_right = hull(top_most,right_most,points);
-	std::vector<segment2D> bottom_right = hull(right_most,bottom_most,points);
-	std::vector<segment2D> bottom_left = hull(bottom_most,left_most,points);
-	std::vector<segment2D> top_left = hull(left_most,top_most,points);
-	std::vector<segment2D> result_hull;
-	merge(result_hull,top_right);
-	merge(result_hull,bottom_right);
-	merge(result_hull,bottom_left);
-	merge(result_hull,top_left);
+	std::cout<<result_hull.size()<<"\n";
 
 	//output the convex hull points
-	for(segment2D const& seg : result_hull)
+	for(auto const& point : result_hull)
 	{
-		std::cout<<seg.a.x<<" "<<seg.a.y<<"\n";
+		std::cout<<point.x<<" "<<point.y<<"\n";
 	}
-
-	while(true)
-	{
-
-	}
-	return 0;
 }
