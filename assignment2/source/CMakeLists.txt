@@ -3,5 +3,5 @@ project(Realtime-Rendering)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(12 exercise12.cpp)
-add_executable(11 exercise11.cpp)
+add_executable(21 exercise21.cpp)
+add_executable(22 exercise22.cpp)

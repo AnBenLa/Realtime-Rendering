@@ -102,8 +102,7 @@ int main(int argc, char const *argv[])
             break;
         }
         triangle t{{x_0,y_0},{x_1,y_1},{x_2,y_2}};
-        //what if triangle is only one point?
-        //what if triangle is only one line?
+
         for(int i = 0; i <= 20; ++i){
             for(int j = 0; j <= 20; ++j){
                 if(inside_triangle(t, {static_cast<double>(j),20.0f - i }))

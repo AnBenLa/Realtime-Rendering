@@ -152,6 +152,7 @@ std::vector<point2D> quickHull(std::vector<point2D> const& points_input)
 		int ori = ORI(left_most,right_most,mid);
 		switch (ori)
 		{
+		    //TODO ist die result hull wirklich leer wenn alle punkte coolinear sind?
 			case 0:
 			{
 				return result_hull;
@@ -168,6 +169,7 @@ std::vector<point2D> quickHull(std::vector<point2D> const& points_input)
 			}
 		}
 	}
+	//TODO wieso nochmal aufrufen?
 	left_most = *points.begin();
 	right_most = *(points.end()-1);
 
@@ -222,7 +224,7 @@ std::vector<point2D> quickHull(std::vector<point2D> const& points_input)
 
 int main(int argc, char const *argv[])
 {
-
+    //TODO was ist wenn alle Punkte identisch sind???
 	uint number_of_points = 0;
 	std::vector<point2D> points;
 	std::vector<point2D> convex_hull;
