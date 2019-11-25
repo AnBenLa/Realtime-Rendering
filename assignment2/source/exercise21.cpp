@@ -196,9 +196,15 @@ std::vector<point2D> quickHull(std::vector<point2D> const& points_input)
 	std::vector<point2D> bottom_left_hull = hull(bottom_most,left_most,points);
 	result_hull.insert(result_hull.end(), bottom_left_hull.begin(),bottom_left_hull.end());
 
+	//chaecks if the convex hull has more then 2 points
+	if(result_hull.size()<3)
+	{
+		return {};
+	}
+
 
 	//sort to start with the bottom left 
-	point2D bottom_left_most = result_hull[0];
+	/*point2D bottom_left_most = result_hull[0];
 	uint position_bottom_left_most = 0;
 
 	for (uint i = 0; i<result_hull.size(); i++)
@@ -216,7 +222,10 @@ std::vector<point2D> quickHull(std::vector<point2D> const& points_input)
 	{
 		result_hull.insert(result_hull.begin(),*(result_hull.end()-1));
 		result_hull.pop_back();
-	}
+	}*/
+
+	result_hull.insert(result_hull.begin(),*(result_hull.end()-1));
+	result_hull.pop_back();
 
 	return result_hull;
 }
