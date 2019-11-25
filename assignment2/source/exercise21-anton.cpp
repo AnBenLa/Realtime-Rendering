@@ -103,6 +103,12 @@ vector<point> compute_con_hull(vector<point> const& points, bool first){
     left = compute_con_hull(left, false);
     right = compute_con_hull(right, false);
     left.insert(left.end(), right.begin(), right.end());
+    if(first){
+        left.erase(unique(left.begin(),left.end()),left.end());
+        if(left.at(0) == left.at(left.size()-1)) {
+            left.pop_back();
+        }
+    }
     return left;
 }
 
@@ -127,8 +133,6 @@ int main() {
         con_hull = compute_con_hull(con_hull, true);
     }
 
-    con_hull.erase(unique(con_hull.begin(),con_hull.end()),con_hull.end());
-    con_hull.pop_back();
     if(con_hull.size() >= 3) {
         cout << con_hull.size() << "\n";
         for (int i = 0; i < con_hull.size(); ++i) {
