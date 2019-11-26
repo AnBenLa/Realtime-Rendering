@@ -118,7 +118,7 @@ vector<point> compute_con_hull(vector<point> const& points, bool first){
     left.insert(left.end(), right.begin(), right.end());
     if(first){
         left.erase(unique(left.begin(),left.end()),left.end());
-        if(left.at(0) == left.at(left.size()-1)) {
+        if(left.size() > 1 && left.at(0) == left.at(left.size()-1)) {
             left.pop_back();
         }
     }
@@ -197,7 +197,7 @@ vector<point> compute_con_hull_co(vector<point> const& points, bool first){
     left.insert(left.end(), right.begin(), right.end());
     if(first){
         left.erase(unique(left.begin(),left.end()),left.end());
-        if(left.at(0) == left.at(left.size()-1)) {
+        if(left.size() > 1 && left.at(0) == left.at(left.size()-1)) {
             left.pop_back();
         }
     }
@@ -233,7 +233,7 @@ int main() {
         //only if it really is a convex hull continue
         if (con_hull_r.size() >= 3) {
             layers += 1;
-            cout << con_hull_r.size() << " # onion layer " << layers << " contains " << con_hull_r.size() << " points\n";
+            cout << con_hull_r.size() << "\n";
             for (int i = 0; i < con_hull_r.size(); ++i) {
                 cout << con_hull_r.at(i).x << " " << con_hull_r.at(i).y << "\n";
             }
