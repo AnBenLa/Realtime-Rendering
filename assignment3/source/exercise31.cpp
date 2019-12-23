@@ -41,7 +41,7 @@ bool operator > (segment const& s1, segment const& s2){
 ostream& operator << (ostream& os, vector<event>const& events){
     cout << setprecision(1) << fixed;
     for(auto const& elem : events){
-        os << "("<< elem.p.x << " , " << elem.p.y << ") ";
+        os << elem.p.x << " " << elem.p.y << " ";
     }
     return os;
 }
@@ -106,21 +106,27 @@ void linesweep(map<string,segment>& segments, vector<point>& points){
     while(!event_queue.empty()){
         event current_event = event_queue.front();
         if(current_event.intersection){
-            //TODO implement this in the correct way
             //swap the two intersecting nodes in the active_segment list check for intersections while doing so
-            vector<segment>::iterator intersecting_segment_1_it;
-            vector<segment>::iterator intersecting_segment_2_it;
-
-            for(auto it = active_segments.begin(); it != active_segments.end(); it++){
-                if(it->id == current_event.id_a){
-                    intersecting_segment_1_it = it;
-                } else if(it->id == current_event.id_b){
-                    intersecting_segment_2_it = it;
+            int ind_1 = 0, ind_2 = 0;
+            for(auto i = 0; i < active_segments.size(); i++){
+                if(active_segments[i].id == current_event.id_a){
+                    ind_1 = i;
+                } else if(active_segments[i].id == current_event.id_b){
+                    ind_2 = i;
                 }
             }
-            //most likely not the correct way to do it!
-            swap(intersecting_segment_1_it, intersecting_segment_2_it);
-
+            swap(active_segments[ind_1], active_segments[ind_2]);
+            if(ind_1 < ind_2){
+                if(ind_1 - 1 >= 0)
+                    intersection_check(active_segments[ind_1], active_segments[ind_1 - 1], event_queue);
+                if(ind_2 + 1 < active_segments.size())
+                    intersection_check(active_segments[ind_2], active_segments[ind_2 + 1], event_queue);
+            } else {
+                if(ind_2 - 1 >= 0)
+                    intersection_check(active_segments[ind_2], active_segments[ind_2 - 1], event_queue);
+                if(ind_1 + 1 < active_segments.size())
+                    intersection_check(active_segments[ind_1], active_segments[ind_1 + 1], event_queue);
+            }
         } else {
             segment current_segment = segments[current_event.p.id];
             if(current_segment.b == current_event.p){
