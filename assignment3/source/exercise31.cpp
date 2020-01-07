@@ -1,6 +1,6 @@
 //
-// Created by Anton on 17.12.2019.
-//
+// author: Anton Lammert 118592
+// authot: Philipp Tornow 118332
 
 #include <fstream>
 #include <iostream>
@@ -190,8 +190,8 @@ int main (){
     string id;
     map<string,segment> segments;
     vector<point> points;
-    ifstream cin ("./input.txt");
-    cin >> n;
+    //ifstream cin ("./input.txt");
+    std::cin >> n;
     while(n--){
         cin >> id >> x0 >> y0 >> x1 >> y1;
         points.push_back({x0,y0,id});
