@@ -35,7 +35,8 @@ struct event{
 };
 
 bool operator > (segment const& s1, segment const& s2){
-    return (s1.a.y > s2.a.y && s1.a.y > s2.b.y) || (s1.b.y > s2.a.y && s1.b.y > s2.b.y);
+    bool t = (s1.a.y > s2.a.y && s1.a.y > s2.b.y) || (s1.b.x > s2.b.x);
+    return t;
 }
 
 ostream& operator << (ostream& os, vector<event>const& events){
@@ -86,8 +87,15 @@ void intersection_check(segment const& a, segment const& b, vector<event>& event
         m2 = dy2 / dx2;
         c2 = b.a.y - m2 * b.a.x;
         point intersect{(c2-c1)/(m1-m2), m1*(c2-c1)/(m1-m2)+c1};
-        events.push_back(event{true,a.id,b.id,intersect});
-        sort(events.begin(), events.end(),[](event const& a, event const& b) -> bool{return a.p.y > b.p.y;});
+        bool sim_1 = intersect == a.a && (intersect == b.a || intersect == b.b);
+        bool sim_2 = intersect == a.b && (intersect == b.a || intersect == b.b);
+        if (!(sim_1 || sim_2)) {
+            if(intersect.y < events[0].p.y) {
+                events.push_back(event{true, a.id, b.id, intersect});
+                sort(events.begin(), events.end(),
+                     [](event const &a, event const &b) -> bool { return a.p.y > b.p.y; });
+            }
+        }
     }
 }
 
@@ -101,7 +109,7 @@ void linesweep(map<string,segment>& segments, vector<point>& points){
     for(auto const& p : points){
         event_queue.push_back(event{false,"","", p});
     }
-#
+
     //process all elements in the queue
     while(!event_queue.empty()){
         event current_event = event_queue.front();
@@ -182,7 +190,7 @@ int main (){
     string id;
     map<string,segment> segments;
     vector<point> points;
-    ifstream cin ("C:\\Users\\Elke\\Desktop\\Anton\\Realtime-Rendering\\assignment3\\source\\input.txt");
+    ifstream cin ("./input.txt");
     cin >> n;
     while(n--){
         cin >> id >> x0 >> y0 >> x1 >> y1;
