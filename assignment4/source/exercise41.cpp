@@ -7,35 +7,34 @@
 using namespace std;
 
 enum dimension {
-    x, y
+    xd, yd
 };
 
 struct point {
     float x, y;
 
-    bool operator == (point const& b){
+    bool operator == (point const &b) {
         return (x == b.x) && (y == b.y);
     }
 
-    bool operator < (point const& b) {
-        if (x < b.x )
+    bool operator<(point const &b) {
+        if (x < b.x)
             return true;
         else if (x == b.x && y == b.y)
             return true;
         return false;
     }
 
-    size_t operator()(const point& b) const noexcept {
+    size_t operator()(const point &b) const noexcept {
         size_t hash = b.x + 10 * b.y;
         return hash;
     };
 };
 
 namespace std {
-    template<> struct hash<point>
-    {
-        std::size_t operator()(const point& p) const noexcept
-        {
+    template<>
+    struct hash<point> {
+        std::size_t operator()(const point &p) const noexcept {
             return p(p);
         }
     };
@@ -60,8 +59,8 @@ public:
 
     //TODO needs to be checked with border cases
     bool intersect(boundingbox const &bb) {
-        return (min(top_right.x,bb.top_right.x) - max(bottom_Left.x, bb.bottom_Left.x) >= 0)
-            && (min(top_right.y,bb.top_right.y) - max(bottom_Left.y, bb.bottom_Left.y) >= 0);
+        return (min(top_right.x, bb.top_right.x) - max(bottom_Left.x, bb.bottom_Left.x) >= 0)
+               && (min(top_right.y, bb.top_right.y) - max(bottom_Left.y, bb.bottom_Left.y) >= 0);
     }
 };
 
@@ -75,71 +74,95 @@ boundingbox operator+(boundingbox const &a, boundingbox const &b) {
 }
 
 class kdnode {
-    //true if internal node, false if leaf node
-    bool flag;
-    kdnode *father;
-    kdnode *left_child;
-    kdnode *right_child;
-    //points on the splitting line are always in the left set!!!
-    //y if the splitting line is vertical or x? if the splitting lines is horizontal)
-    dimension splitting_line_orientation;
-    //the x / y position of the vertical / horizontal line
-    float splitting_line_position;
-    point p;
-    boundingbox bound;
+    private:
+        //true if internal node, false if leaf node
+        bool flag;
+        kdnode *father;
+        kdnode *left_child;
+        kdnode *right_child;
+        //points on the splitting line are always in the left set!!!
+        //y if the splitting line is vertical or x? if the splitting lines is horizontal)
+        dimension splitting_line_orientation;
+        //the x / y position of the vertical / horizontal line
+        float splitting_line_position;
+        point p;
+        boundingbox bound;
+    public:
+        kdnode(vector<point> const &points_sorted_x, vector<point> const &points_sorted_y) : bound{boundingbox{{},
+                                                                                                               {}}} {
 
-    kdnode(vector<point> const& points_sorted_x, vector<point> const& points_sorted_y){
-        if(father == nullptr){
-            splitting_line_orientation = x;
-        } else {
-            if(father->splitting_line_orientation == x)
-                splitting_line_orientation = y;
-            else
-                splitting_line_orientation = x;
-        }
-        point splitting_point;
-        vector<point> left_half_x{}, left_half_y{}, right_half_x{}, right_half_y{};
-        if(splitting_line_orientation == x){
-            int splitting_point_index = (points_sorted_x.size() - 1)/2;
-            splitting_point = points_sorted_x[splitting_point_index];
-            splitting_line_position = splitting_point.x;
-            unordered_set<point> left_side;
-            for(int i = 0; i <= splitting_point_index; ++i){
-                left_half_x.push_back(points_sorted_x[i]);
-                left_side.insert(points_sorted_x[i]);
+            //create a bounding box for the current node using the sorted points
+            float min_x, max_x, min_y, max_y;
+            min_x = points_sorted_x[0].x;
+            max_x = points_sorted_x[points_sorted_x.size() - 1].x;
+            min_y = points_sorted_y[0].y;
+            max_y = points_sorted_y[points_sorted_y.size() - 1].y;
+            bound = boundingbox{point{min_x, min_y}, {max_x, max_y}};
+
+            //check if we have to split horizontally or vertically
+            if (father == nullptr) {
+                splitting_line_orientation = xd;
+            } else {
+                if (father->splitting_line_orientation == xd)
+                    splitting_line_orientation = yd;
+                else
+                    splitting_line_orientation = xd;
             }
-            for(int i = splitting_point_index + 1; i < points_sorted_x.size(); ++i)
-                right_half_x.push_back(points_sorted_x[i]);
-            for(auto const& point : points_sorted_y){
-                if(left_side.find(point) != left_side.end()){
-                    left_half_y.push_back(point);
-                } else {
-                    right_half_y.push_back(point);
+
+            //do the split
+            point splitting_point;
+            vector<point> left_half_x{}, left_half_y{}, right_half_x{}, right_half_y{};
+            if (splitting_line_orientation == xd) {
+                //find the median which will be the splitting point
+                int splitting_point_index = (points_sorted_x.size() - 1) / 2;
+                splitting_point = points_sorted_x[splitting_point_index];
+                splitting_line_position = splitting_point.x;
+                unordered_set<point> left_side;
+                //take all elements lesser than equal the median into the left side
+                for (int i = 0; i <= splitting_point_index; ++i) {
+                    left_half_x.push_back(points_sorted_x[i]);
+                    left_side.insert(points_sorted_x[i]);
+                }
+                //take all elements larger than the median into the right side
+                for (int i = splitting_point_index + 1; i < points_sorted_x.size(); ++i)
+                    right_half_x.push_back(points_sorted_x[i]);
+                //if the element is in the left side push it to left side sorted by y, else into the right sight sorted by y
+                for (auto const &point : points_sorted_y) {
+                    if (left_side.find(point) != left_side.end()) {
+                        left_half_y.push_back(point);
+                    } else {
+                        right_half_y.push_back(point);
+                    }
+                }
+            } else {
+                //find the median which will be the splitting point
+                int splitting_point_index = (points_sorted_y.size() - 1) / 2;
+                splitting_point = points_sorted_y[splitting_point_index];
+                splitting_line_position = splitting_point.y;
+                unordered_set<point> left_side;
+                //take all elements lesser than equal the median into the left side
+                for (int i = 0; i <= splitting_point_index; ++i) {
+                    left_half_y.push_back(points_sorted_y[i]);
+                    left_side.insert(points_sorted_y[i]);
+                }
+                //take all elements larger than the median into the right side
+                for (int i = splitting_point_index + 1; i < points_sorted_y.size(); ++i)
+                    right_half_y.push_back(points_sorted_y[i]);
+                //if the element is in the left side push it to left side sorted by y, else into the right sight sorted by y
+                for (auto const &point : points_sorted_x) {
+                    if (left_side.find(point) != left_side.end()) {
+                        left_half_x.push_back(point);
+                    } else {
+                        right_half_x.push_back(point);
+                    }
                 }
             }
-        } else {
-            int splitting_point_index = (points_sorted_y.size() - 1)/2;
-            splitting_point = points_sorted_y[splitting_point_index];
-            splitting_line_position = splitting_point.y;
-            unordered_set<point> left_side;
-            for(int i = 0; i <= splitting_point_index; ++i){
-                left_half_y.push_back(points_sorted_y[i]);
-                left_side.insert(points_sorted_y[i]);
-            }
-            for(int i = splitting_point_index + 1; i < points_sorted_y.size(); ++i)
-                right_half_y.push_back(points_sorted_y[i]);
-            for(auto const& point : points_sorted_x){
-                if(left_side.find(point) != left_side.end()){
-                    left_half_x.push_back(point);
-                } else {
-                    right_half_x.push_back(point);
-                }
-            }
+            //TODO create children nodes from the left and right halves
+            if(!left_half_x.empty())
+                left_child = new kdnode{left_half_x, left_half_y};
+            if(!right_half_x.empty())
+                right_child = new kdnode(right_half_x, right_half_y);
         }
-        //TODO create children nodes from the left and right halves
-
-    }
-
 };
 
 class kdtree {
@@ -148,20 +171,39 @@ private:
 
     vector<point> reportSubtree(kdnode *n) {
         //TODO implement report Subtree
-        return NULL;
+        //return NULL;
     }
 
 public:
     void build(vector<point> const &points) {
+        vector<point> points_sorted_x = {points}, points_sorted_y = {points};
+        sort(points_sorted_x.begin(), points_sorted_x.end(),
+             [](point const &a, point const &b) -> bool { return a.x < b.x; });
+        sort(points_sorted_y.begin(), points_sorted_y.end(),
+             [](point const &a, point const &b) -> bool { return a.y < b.y; });
         //TODO create tree
+        root = new kdnode{points_sorted_x, points_sorted_y};
     }
 
     vector<point> search(boundingbox const &bb) {
         //TODO implement search
-        return NULL;
+        //return NULL;
     }
 };
 
 int main() {
+    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment4\\source\\input.txt");
+    int num_points;
+    float x_tmp,y_tmp;
+    cin >> num_points;
+    vector<point> points;
+
+    while(num_points--){
+        cin >> x_tmp >> y_tmp;
+        points.push_back(point{x_tmp, y_tmp});
+    }
+    kdtree tree{};
+    tree.build(points);
+
     return 0;
 }
