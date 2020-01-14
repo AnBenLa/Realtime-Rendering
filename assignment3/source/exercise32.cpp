@@ -1,6 +1,6 @@
 //
-// Created by Anton on 17.12.2019.
-//
+// author: Anton Lammert 118592
+// authot: Philipp Tornow 118332
 
 #include <fstream>
 #include <iostream>
@@ -226,8 +226,8 @@ int main() {
     map<string, segment> segments;
     vector<point> points;
     map<point, vector<string>> point_segment;
-    ifstream cin("C:\\Users\\Anton\\CLionProjects\\Realtime-Rendering\\assignment3\\source\\input-2.txt");
-    cin >> n;
+    //ifstream cin("C:\\Users\\Anton\\CLionProjects\\Realtime-Rendering\\assignment3\\source\\input-2.txt");
+    std::cin >> n;
     while (n--) {
         cin >> id >> x0 >> y0 >> x1 >> y1;
         point a{x0, y0, id};
