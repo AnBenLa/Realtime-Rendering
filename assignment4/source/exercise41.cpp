@@ -85,6 +85,8 @@ class kdnode {
         kdnode *father;
         kdnode *left_child;
         kdnode *right_child;
+        //number of points underneath this node
+        int num_leaf_nodes = 0;
         //points on the splitting line are always in the left set!!!
         //y if the splitting line is vertical or x? if the splitting lines is horizontal)
         dimension splitting_line_orientation;
@@ -101,6 +103,7 @@ class kdnode {
                 //signal node as leaf node
                 flag = false;
                 p = points_sorted_x[0];
+                num_leaf_nodes = 1;
             } else {
                 //signal node as internal node
                 flag = true;
@@ -172,10 +175,14 @@ class kdnode {
                         }
                     }
                 }
-                if (!left_half_x.empty())
+                if (!left_half_x.empty()) {
                     left_child = new kdnode{left_half_x, left_half_y, this};
-                if (!right_half_x.empty())
+                    num_leaf_nodes += left_child->num_leaf_nodes;
+                }
+                if (!right_half_x.empty()) {
                     right_child = new kdnode(right_half_x, right_half_y, this);
+                    num_leaf_nodes += right_child->num_leaf_nodes;
+                }
             } else {
                 left_child = nullptr;
                 right_child = nullptr;
@@ -200,6 +207,10 @@ class kdnode {
         boundingbox get_boundingbox (){
             return bound;
         }
+
+        int get_point_count(){
+            return num_leaf_nodes;
+        }
 };
 
 class kdtree {
@@ -215,6 +226,10 @@ private:
             left_points.insert(left_points.end(), right_points.begin(), right_points.end());
             return left_points;
         }
+    }
+
+    int reportSubtreePointCount(kdnode *n) {
+        return n->get_point_count();
     }
 
 public:
@@ -244,14 +259,26 @@ public:
         }
     }
 
+    int count(boundingbox bb){
+        return count(bb,root);
+    }
+
     //TODO needs to be implemented so that the runtime is in the sqrt of n!!!
-    int count(boundingbox range){
-        return 0;
+    int count(boundingbox bb, kdnode* node){
+        if(node->get_boundingbox().inside(bb)){
+            return reportSubtreePointCount(node);
+        } else if(node->get_boundingbox().intersect(bb)){
+            int left_point_count= count(bb, node->get_left_child());
+            int right_point_count = count(bb, node->get_right_child());
+            return left_point_count + right_point_count;
+        } else {
+            return 0;
+        }
     }
 };
 
 int main() {
-    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment4\\source\\input.txt");
+    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment4\\source\\input-2.txt");
     int num_points;
     float x_tmp,y_tmp, x_min, y_min, x_max, y_max;
     cin >> num_points;
