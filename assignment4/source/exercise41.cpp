@@ -33,7 +33,7 @@ struct point {
 };
 
 bool operator == (point const &a, point const& b) {
-    return (abs(a.x - b.x) < 0.0001f) && (abs(b.y-b.y) < 0.0001f);
+    return (abs(a.x - b.x) < 0.0001f) && (abs(a.y-b.y) < 0.0001f);
 }
 
 namespace std {
@@ -278,7 +278,7 @@ public:
 };
 
 int main() {
-    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment4\\source\\input-2.txt");
+    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment4\\source\\input-3.txt");
     int num_points;
     float x_tmp,y_tmp, x_min, y_min, x_max, y_max;
     cin >> num_points;
