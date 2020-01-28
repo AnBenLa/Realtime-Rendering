@@ -38,6 +38,10 @@ struct segment {
     point a, b;
 };
 
+bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::iterator const& seg_it2){
+    return seg_it1->id == seg_it2->id;
+}
+
 bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::reverse_iterator const& seg_it2){
     return seg_it1->id == seg_it2->id;
 }
