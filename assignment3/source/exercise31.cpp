@@ -32,6 +32,10 @@ bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::ite
     return seg_it1->id == seg_it2->id;
 }
 
+bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::reverse_iterator const& seg_it2){
+    return seg_it1->id == seg_it2->id;
+}
+
 struct event{
     bool intersection;
     string id_a, id_b;
@@ -158,7 +162,7 @@ void linesweep(map<string,segment>& segments, vector<point>& points){
                         break;
                     }
                 }
-                bool middle = (!(segment_it == active_segments.end()--)) && (!(segment_it == active_segments.begin()));
+                bool middle = (!(segment_it == active_segments.rbegin())) && (!(segment_it == active_segments.begin()));
                 active_segments.erase(segment_it);
                 if(middle)
                     intersection_check(*segment_it,*(segment_it--),event_queue);
@@ -205,7 +209,7 @@ int main (){
     string id;
     map<string,segment> segments;
     vector<point> points;
-    //ifstream cin ("./input-3.txt");
+    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment3\\source\\input-3.txt");
     cin >> n;
     while(n--){
         cin >> id >> x0 >> y0 >> x1 >> y1;
