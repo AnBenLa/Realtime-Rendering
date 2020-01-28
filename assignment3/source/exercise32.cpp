@@ -187,7 +187,7 @@ void linesweep(map<string, segment> &segments, vector<point> &points, map<point,
                             break;
                         }
                     }
-                    bool middle = (!(segment_it == active_segments.end()--)) && (!(segment_it == active_segments.begin()));
+                    bool middle = (!(segment_it == active_segments.rbegin())) && (!(segment_it == active_segments.begin()));
                     active_segments.erase(segment_it);
                     if(middle)
                         intersection_check(*segment_it,*(segment_it--),event_queue);
