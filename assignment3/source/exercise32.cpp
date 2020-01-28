@@ -38,11 +38,20 @@ struct segment {
     point a, b;
 };
 
+bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::iterator const& seg_it2){
+    return seg_it1->id == seg_it2->id;
+}
+
 struct event {
     bool intersection, multiple;
     string id_a, id_b;
     point p;
 };
+
+bool operator == (event const& event1, event const& event2) {
+    bool t = (event1.p==event2.p)&&event1.intersection&&event1.intersection;
+    return t;
+}
 
 bool operator>(segment const &s1, segment const &s2) {
     bool t = (s1.a.y > s2.a.y && s1.a.y > s2.b.y) || (s1.b.x > s2.b.x);
@@ -105,7 +114,10 @@ void intersection_check(segment const &a, segment const &b, vector<event> &event
         bool sim_2 = intersect == a.b && (intersect == b.a || intersect == b.b);
         if (!(sim_1 || sim_2)) {
             if(intersect.y < events[0].p.y) {
-                events.push_back(event{true, false, a.id, b.id, intersect});
+                event e = event{true, false, a.id, b.id, intersect};
+                if(std::find(events.begin(),events.end(),e)==events.end()) {
+                    events.push_back(e);
+                }
                 sort(events.begin(), events.end(),
                      [](event const &a, event const &b) -> bool { return a.p.y > b.p.y; });
             }
@@ -171,7 +183,10 @@ void linesweep(map<string, segment> &segments, vector<point> &points, map<point,
                             break;
                         }
                     }
+                    bool middle = (!(segment_it == active_segments.end()--)) && (!(segment_it == active_segments.begin()));
                     active_segments.erase(segment_it);
+                    if(middle)
+                        intersection_check(*segment_it,*(segment_it--),event_queue);
                 } else {
                     /*
                         add the segment to the active segment list in the right position and check for intersections with neighbours
@@ -226,7 +241,7 @@ int main() {
     map<string, segment> segments;
     vector<point> points;
     map<point, vector<string>> point_segment;
-    //ifstream cin("C:\\Users\\Anton\\CLionProjects\\Realtime-Rendering\\assignment3\\source\\input-2.txt");
+    //ifstream cin("./input-3.txt");
     std::cin >> n;
     while (n--) {
         cin >> id >> x0 >> y0 >> x1 >> y1;
