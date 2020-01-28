@@ -209,7 +209,7 @@ int main (){
     string id;
     map<string,segment> segments;
     vector<point> points;
-    ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment3\\source\\input-3.txt");
+    //ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment3\\source\\input-3.txt");
     cin >> n;
     while(n--){
         cin >> id >> x0 >> y0 >> x1 >> y1;

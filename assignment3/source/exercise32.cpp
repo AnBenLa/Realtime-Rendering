@@ -38,7 +38,7 @@ struct segment {
     point a, b;
 };
 
-bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::iterator const& seg_it2){
+bool operator == (vector<segment>::iterator const& seg_it1, vector<segment>::reverse_iterator const& seg_it2){
     return seg_it1->id == seg_it2->id;
 }
 
@@ -242,7 +242,7 @@ int main() {
     vector<point> points;
     map<point, vector<string>> point_segment;
     //ifstream cin("./input-3.txt");
-    std::cin >> n;
+    cin >> n;
     while (n--) {
         cin >> id >> x0 >> y0 >> x1 >> y1;
         point a{x0, y0, id};
