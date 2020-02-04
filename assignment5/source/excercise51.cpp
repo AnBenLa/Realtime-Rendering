@@ -117,7 +117,7 @@ bool checkCircleCriterion(vector<triangle> const& triangles, vector<point> const
 }
 
 int main() {
-    ifstream cin ("./input-3.txt");
+    //ifstream cin ("./input-4.txt");
     int num_points, num_triangle_indices;
     double x_tmp, y_tmp;
 

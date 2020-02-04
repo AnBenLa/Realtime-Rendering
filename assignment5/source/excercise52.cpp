@@ -242,7 +242,7 @@ class DCEL {
 
 int main() {
 
-	ifstream cin ("./input.txt");
+	//ifstream cin ("./input.txt");
     int num_points, num_triangle_indices;
     double x_tmp, y_tmp;
 
