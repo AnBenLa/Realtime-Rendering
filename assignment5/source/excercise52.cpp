@@ -191,8 +191,6 @@ class DCEL {
 
 		bool checkCircleCriterion() {
 
-			bool result = true;
-
 			for(auto it = faces_.begin();it!=faces_.end();it++) {
 				point a,b,c;
 
@@ -205,8 +203,8 @@ class DCEL {
 				c = first_edge->prev_->v_->point_;
 
 				//go through all edges
-				do {
-					//edge = edge->next_;
+				for (int i = 0; i<3;i++)
+				{
 					h_edge* twin;
 
 					//determine if edge has another adjacent triangle
@@ -220,16 +218,13 @@ class DCEL {
         				circle circle = calculateCircle(t.p1,t.p2,t.p3);
 
           				//use circle equation to check if point is inside
-        				if(pow(p.x-circle.center.x,2)+pow(p.y-circle.center.y,2) < pow(circle.radius,2))
-            				result = false;
-        				else
-            				result = true;
-					}
-					edge = edge->next_;
+                		if(pow(p.x-circle.center.x,2)+pow(p.y-circle.center.y,2) < floor(pow(circle.radius,2)))
+                    		return false;
+                    }
+                    edge = edge->next_;
 				}
-				while (!(*edge->next_->v_ == *first_edge->v_));
 			}
-			return result;
+			return true;
 		}
 
 		DCEL(){};
@@ -253,7 +248,7 @@ class DCEL {
 
 int main() {
 
-	ifstream cin ("./input.txt");
+	ifstream cin ("./input-3.txt");
     int num_points, num_triangle_indices;
     double x_tmp, y_tmp;
 

@@ -106,18 +106,18 @@ bool checkCircleCriterion(vector<triangle> const& triangles, vector<point> const
             if(p==t.p1||p==t.p2||p==t.p3)
                 continue;
             else
+            {
                 //use circle equation to check if point is inside
-                if(pow(p.x-circle.center.x,2)+pow(p.y-circle.center.y,2) < pow(circle.radius,2))
+                if(pow(p.x-circle.center.x,2)+pow(p.y-circle.center.y,2) < floor(pow(circle.radius,2)))
                     return false;
-                else
-                    return true;
+            }
         }
     }
-    return false;
+    return true;
 }
 
 int main() {
-    ifstream cin ("./input.txt");
+    ifstream cin ("./input-3.txt");
     int num_points, num_triangle_indices;
     double x_tmp, y_tmp;
 
