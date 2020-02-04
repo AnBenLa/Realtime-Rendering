@@ -53,6 +53,73 @@ struct face {
 	list<h_edge*> inner_; //one half-edge per inner hole
 };
 
+circle calculateCircle(point const& A, point const& B, point const& C) {
+
+    /////////////// calculate circle center //////////////
+    point center;
+    
+    //construct two lines with the given points (A,B) and (B,C)
+    double deltaX_a = B.x-A.x;
+    double deltaY_a = B.y-A.y;
+    double deltaX_b = C.x-B.x;
+    double deltaY_b = C.y-B.y;
+
+    double AB_mid_y = (A.y+B.y)/2;
+    double BC_mid_y = (B.y+C.y)/2;
+    double AB_mid_x = (A.x+B.x)/2;
+    double BC_mid_x = (B.x+C.x)/2;
+
+    //use the idea that the intersection of two lines, perpendicular to these lines and passing through the midpoints, is the center of the searched circle
+
+    //except vertical lines
+    if(deltaX_a==0) { 
+        center.y = AB_mid_y;
+        if(deltaY_b==0) {
+            center.x = BC_mid_x;
+        }
+        else {
+            double mb = deltaY_b/deltaX_b;
+            center.x = mb*(BC_mid_y-center.y)+BC_mid_x;
+        }
+    }
+    else if(deltaX_b==0) {
+        center.y = BC_mid_y; //check point in circle
+        if(deltaY_a==0) {
+            center.x = AB_mid_x;
+        }
+        else {
+            double ma = deltaY_a/deltaX_a;
+            center.x = ma*(AB_mid_y-center.y)+AB_mid_x;
+        }
+    }
+
+    //except horizontal lines
+    else if(deltaY_a==0) {
+        center.x = AB_mid_x;
+        double mb = deltaY_b/deltaX_b; 
+        center.y = (BC_mid_x-center.x)/mb + BC_mid_y;
+    }
+    else if(deltaY_b==0){
+        center.x = BC_mid_x;
+        double ma = deltaY_a/deltaX_a;
+        center.y = (AB_mid_x-center.x)/ma + AB_mid_y;
+    }
+    else {
+        //set the equations for the perpendiculars equal
+        //solve equation for x
+        double ma = deltaY_a/deltaX_a;
+        double mb = deltaY_b/deltaX_b; 
+
+        center.x = (ma*mb*(AB_mid_y-BC_mid_y)+mb*AB_mid_x - ma*BC_mid_x)/(mb-ma);
+        center.y = AB_mid_y - (center.x - AB_mid_x)/ma;
+    }   
+
+    /////////////// calculate radius //////////////
+    double radius = sqrt(pow(center.x-A.x,2)+pow(center.y-A.y,2));
+
+    return circle{center,radius};
+}
+
 class DCEL {
 	public:
 		vector<vertex*> vertices_;
@@ -76,34 +143,32 @@ class DCEL {
 			face* t_face = new face{nullptr,list<h_edge*>()};
 
 			for(int i = 0; i<3; i++) {
-
-				//check if point is already in the mesh
+				//check if point is already incident to an edge 
 				vector<h_edge*>::iterator it;
-				it = std::find_if(h_edges_.begin(),h_edges_.end(),[this, indices, i](h_edge* e){
+				it = find_if(h_edges_.begin(),h_edges_.end(),[this, indices, i](h_edge* e){
 					return *(e->v_)==(*(vertices_[indices[i]]));
 				});
 
 				if(it==h_edges_.end()) {
-					h_edges[i] = new h_edge{vertices_[indices[i]]};
-					twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i],t_face};
+					h_edges[i] = new h_edge{vertices_[indices[i]],nullptr,t_face,nullptr,nullptr};
+					twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i]};
 					vertices_[indices[i]]->edge_ = h_edges[i];
 					h_edges_.push_back(h_edges[i]);
 					h_edges_.push_back(twin_h_edges[i]);
 				}
 				else {
-
 					//check if the edge already exists in the mesh
-					if((*it)->twin_ != nullptr && *(*it)->twin_->v_ == *vertices_[indices[(i+1)%3]]){
+					if((*it)->twin_ != nullptr && *(*it)->twin_->v_ == *vertices_[indices[(i+1)%3]]) {
 						//use existend edge
-						h_edges[i] = *it;
+						h_edges[i] = (*it);
 
 						//add incident face for other half_edge
-						(*it)->twin_->face_ = t_face;
+						(*it)->face_ = t_face;
 						twin_h_edges[i] = (*it)->twin_;
 					}
-					else{
-						h_edges[i] = new h_edge{vertices_[indices[i]],nullptr,nullptr,(*it)->twin_,nullptr};
-						twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i],t_face};
+					else {
+						h_edges[i] = new h_edge{vertices_[indices[i]],nullptr,t_face,nullptr,nullptr};
+						twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i]};
 						h_edges_.push_back(h_edges[i]);
 						h_edges_.push_back(twin_h_edges[i]);
 					}
@@ -116,23 +181,55 @@ class DCEL {
 				edge->twin_= twin_h_edges[j];
 				edge->next_= h_edges[(j+1)%3];
 				edge->prev_= h_edges[(j+2)%3];
-
-				h_edge* twin_edge = twin_h_edges[j];
-				twin_edge->next_ = twin_h_edges[(j+1)%3];
-				twin_edge->prev_ = twin_h_edges[(j+2)%3];
 			}
 
 			//set face edge
-			t_face->outer_ = twin_h_edges[0]; 
+			t_face->outer_ = h_edges[0]; 
 			faces_.push_back(t_face);
 		}
 
+
 		bool checkCircleCriterion() {
 
-			/*for(auto it = faces_.begin();it!=faces_.end();it++) {
+			bool result = true;
 
-			}*/
-			return false;
+			for(auto it = faces_.begin();it!=faces_.end();it++) {
+				point a,b,c;
+
+				h_edge* first_edge = (*it)->outer_;
+				h_edge* edge = first_edge;
+
+				//get triangle vertices
+				a = first_edge->v_->point_;
+				b = first_edge->next_->v_->point_;
+				c = first_edge->prev_->v_->point_;
+
+				//go through all edges
+				do {
+					//edge = edge->next_;
+					h_edge* twin;
+
+					//determine if edge has another adjacent triangle
+					if(edge->twin_->face_!=nullptr){
+						twin = edge->twin_;
+
+						//check criteria for current edge
+						//calculate circle
+						triangle t = triangle{a,b,c};
+						point p = twin->prev_->v_->point_;
+        				circle circle = calculateCircle(t.p1,t.p2,t.p3);
+
+          				//use circle equation to check if point is inside
+        				if(pow(p.x-circle.center.x,2)+pow(p.y-circle.center.y,2) < pow(circle.radius,2))
+            				result = false;
+        				else
+            				result = true;
+					}
+					edge = edge->next_;
+				}
+				while (!(*edge->next_->v_ == *first_edge->v_));
+			}
+			return result;
 		}
 
 		DCEL(){};
@@ -165,6 +262,11 @@ int main() {
     vector<triangle> triangles;
 
     DCEL dcel;
+
+    if(num_triangle_indices/3 > 1000) {
+    	std::cout<<"NO";
+    	return 0;
+    }
 
     while(num_points--){
         cin >> x_tmp >> y_tmp;
