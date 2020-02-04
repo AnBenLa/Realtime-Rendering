@@ -146,17 +146,19 @@ class DCEL {
 				//check if point is already incident to an edge 
 				vector<h_edge*>::iterator it;
 				it = find_if(h_edges_.begin(),h_edges_.end(),[this, indices, i](h_edge* e){
-					return *(e->v_)==(*(vertices_[indices[i]]));
+                    bool starts_at_point = *(e->v_)==(*(vertices_[indices[i]]));
+                    bool ends_at_point = *(e->twin_->v_)==(*(vertices_[indices[(i+1)%3]]));
+				    return starts_at_point && ends_at_point;
 				});
 
-				if(it==h_edges_.end()) {
+				if(it == h_edges_.end()) {
 					h_edges[i] = new h_edge{vertices_[indices[i]],nullptr,t_face,nullptr,nullptr};
 					twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i]};
+                    h_edges[i]->twin_ = twin_h_edges[i];
 					vertices_[indices[i]]->edge_ = h_edges[i];
 					h_edges_.push_back(h_edges[i]);
 					h_edges_.push_back(twin_h_edges[i]);
-				}
-				else {
+				} else {
 					//check if the edge already exists in the mesh
 					if((*it)->twin_ != nullptr && *(*it)->twin_->v_ == *vertices_[indices[(i+1)%3]]) {
 						//use existend edge
@@ -192,7 +194,8 @@ class DCEL {
 		bool checkCircleCriterion() {
 
 			for(auto it = faces_.begin();it!=faces_.end();it++) {
-				point a,b,c;
+				face f = *(*it);
+			    point a,b,c;
 
 				h_edge* first_edge = (*it)->outer_;
 				h_edge* edge = first_edge;
@@ -248,7 +251,7 @@ class DCEL {
 
 int main() {
 
-	ifstream cin ("./input-3.txt");
+	ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment5\\source\\input-5.txt");
     int num_points, num_triangle_indices;
     double x_tmp, y_tmp;
 
@@ -274,7 +277,7 @@ int main() {
 
         triangle t = triangle{points[p1],points[p2],points[p3]};
         triangles.push_back(t);
-        dcel.insertTriangle(p1,p3,p2);
+        dcel.insertTriangle(p1,p2,p3);
     }
 
     //evaluate triangulation
