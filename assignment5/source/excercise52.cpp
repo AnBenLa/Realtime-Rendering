@@ -152,28 +152,19 @@ class DCEL {
 				});
 
 				if(it == h_edges_.end()) {
+
 					h_edges[i] = new h_edge{vertices_[indices[i]],nullptr,t_face,nullptr,nullptr};
 					twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i]};
                     h_edges[i]->twin_ = twin_h_edges[i];
 					vertices_[indices[i]]->edge_ = h_edges[i];
 					h_edges_.push_back(h_edges[i]);
 					h_edges_.push_back(twin_h_edges[i]);
-				} else {
-					//check if the edge already exists in the mesh
-					if((*it)->twin_ != nullptr && *(*it)->twin_->v_ == *vertices_[indices[(i+1)%3]]) {
-						//use existend edge
-						h_edges[i] = (*it);
 
-						//add incident face for other half_edge
-						(*it)->face_ = t_face;
-						twin_h_edges[i] = (*it)->twin_;
-					}
-					else {
-						h_edges[i] = new h_edge{vertices_[indices[i]],nullptr,t_face,nullptr,nullptr};
-						twin_h_edges[i] = new h_edge{vertices_[indices[(i+1)%3]],h_edges[i]};
-						h_edges_.push_back(h_edges[i]);
-						h_edges_.push_back(twin_h_edges[i]);
-					}
+				} else {
+					//use existend edge
+					h_edges[i] = (*it);
+					(*it)->face_ = t_face;
+					twin_h_edges[i] = (*it)->twin_;
 				}
 			}
 
@@ -251,7 +242,7 @@ class DCEL {
 
 int main() {
 
-	ifstream cin ("C:\\Users\\Mortiferum\\CLionProjects\\Realtime-Rendering\\assignment5\\source\\input-5.txt");
+	ifstream cin ("./input.txt");
     int num_points, num_triangle_indices;
     double x_tmp, y_tmp;
 
